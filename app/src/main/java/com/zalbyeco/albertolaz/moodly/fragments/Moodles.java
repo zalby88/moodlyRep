@@ -63,7 +63,7 @@ public class Moodles extends Fragment implements OnClickListener {
     public void sendTextMoodly(View v) {
         String message = msgTextEdit.getEditableText().toString();
         if (!message.equalsIgnoreCase("")) {
-            final MoodleMsg chatMessage = new MoodleMsg(user1, user2,
+            final MoodleMsg chatMessage = new MoodleMsg(user1, user1,
                     message, "" + random.nextInt(1000), true);
             chatMessage.setMsgID();
             chatMessage.body = message;

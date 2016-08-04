@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private MoodleService mService;
     private final ServiceConnection mConnection = new ServiceConnection() {
 
-        @SuppressWarnings("unchecked")
         @Override
         public void onServiceConnected(final ComponentName name,
                                        final IBinder service) {

@@ -14,13 +14,13 @@ public class MoodleMsg {
     public String msgid;
     public boolean isMine;// Did I send the message.
 
-    public MoodleMsg(String moodleSender, String Receiver, String messageString,
+    public MoodleMsg(String moodleSender, String moodleReceiver, String messageString,
                        String ID, boolean isMINE) {
         body = messageString;
         isMine = isMINE;
         sender = moodleSender;
         msgid = ID;
-        receiver = Receiver;
+        receiver = moodleReceiver;
         senderName = sender;
     }
 
