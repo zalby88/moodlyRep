@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Moodly</string>
+    <string name="server">UnknownServer</string>
+</resources>
