@@ -52,7 +52,7 @@ public class MoodleService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        xmppManager.tcpConnection.disconnect();
+        xmppManager.getTcpConnection().disconnect();
     }
 
     public static boolean isNetworkConnected() {

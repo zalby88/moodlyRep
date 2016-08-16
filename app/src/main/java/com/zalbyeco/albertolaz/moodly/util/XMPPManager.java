@@ -37,19 +37,24 @@ import com.zalbyeco.albertolaz.moodly.service.MoodleService;
 
 public class XMPPManager {
 
-    public static boolean isConnected = false;
-    public boolean isLoggedIn = false;
-    public static boolean isConnecting = false;
-    public static boolean isToasted = true;
+
+
+    private static boolean connecting = false;
+    private static boolean toasted = true;
+    private static boolean instanceCreated = false;
+    private static XMPPTCPConnection tcpConnection = null;
+    private static boolean connected = false;
+
+    private boolean isLoggedIn = false;
     private boolean isMoodleCreated = false;
     private String serverAddress;
-    public static XMPPTCPConnection tcpConnection;
-    public static String loginUser;
-    public static String passwordUser;
-    Gson gson;
-    MoodleService context;
-    public static XMPPManager instance = null;
-    public static boolean instanceCreated = false;
+
+    private static String loginUser;
+    private static String passwordUser;
+    private Gson gson;
+    private MoodleService context;
+    private static XMPPManager instance;
+
 
     public org.jivesoftware.smack.chat.Chat myChat;
 
@@ -127,8 +132,8 @@ public class XMPPManager {
             protected synchronized Boolean doInBackground(Void... arg0) {
                 if (tcpConnection.isConnected())
                     return false;
-                isConnecting = true;
-                if (isToasted)
+                setConnecting(true);
+                if (isToasted())
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                         @Override
@@ -155,10 +160,10 @@ public class XMPPManager {
 
                         }
                     });
-                    isConnected = true;
+                    setConnected(true);
 
                 } catch (IOException e) {
-                    if (isToasted)
+                    if (isToasted())
                         new Handler(Looper.getMainLooper())
                                 .post(new Runnable() {
 
@@ -187,7 +192,7 @@ public class XMPPManager {
                     Log.e("(" + caller + ")",
                             "SMACKException: " + e.getMessage());
                 } catch (XMPPException e) {
-                    if (isToasted)
+                    if (isToasted())
 
                         new Handler(Looper.getMainLooper())
                                 .post(new Runnable() {
@@ -206,7 +211,8 @@ public class XMPPManager {
                             "XMPPException: " + e.getMessage());
 
                 }
-                return isConnecting = false;
+                setConnecting(false);
+                return isConnecting();
             }
         };
         connectionThread.execute();
@@ -275,7 +281,7 @@ public class XMPPManager {
         public void connected(final XMPPConnection connection) {
 
             Log.d("xmpp", "Connected!");
-            isConnected = true;
+            setConnected(true);
             if (!connection.isAuthenticated()) {
                 login();
             }
@@ -283,7 +289,7 @@ public class XMPPManager {
 
         @Override
         public void connectionClosed() {
-            if (isToasted)
+            if (isToasted())
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
 
@@ -297,14 +303,14 @@ public class XMPPManager {
                     }
                 });
             Log.d("xmpp", "ConnectionCLosed!");
-            isConnected = false;
+            setConnected(false);
             isMoodleCreated = false;
             isLoggedIn = false;
         }
 
         @Override
         public void connectionClosedOnError(Exception arg0) {
-            if (isToasted)
+            if (isToasted())
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
 
@@ -316,7 +322,7 @@ public class XMPPManager {
                     }
                 });
             Log.d("xmpp", "ConnectionClosedOn Error!");
-            isConnected = false;
+            setConnected(false);
 
             isMoodleCreated = false;
             isLoggedIn = false;
@@ -330,7 +336,7 @@ public class XMPPManager {
 
         @Override
         public void reconnectionFailed(Exception arg0) {
-            if (isToasted)
+            if (isToasted())
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                     @Override
@@ -342,7 +348,7 @@ public class XMPPManager {
                     }
                 });
             Log.d("xmpp", "ReconnectionFailed!");
-            isConnected = false;
+            setConnected(false);
 
             isMoodleCreated = false;
             isLoggedIn = false;
@@ -350,7 +356,7 @@ public class XMPPManager {
 
         @Override
         public void reconnectionSuccessful() {
-            if (isToasted)
+            if (isToasted())
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
 
@@ -364,7 +370,7 @@ public class XMPPManager {
                     }
                 });
             Log.d("xmpp", "ReconnectionSuccessful");
-            isConnected = true;
+            setConnected(true);
 
             isMoodleCreated = false;
             isLoggedIn = false;
@@ -392,7 +398,7 @@ public class XMPPManager {
 
                 }
             }).start();
-            if (isToasted)
+            if (isToasted())
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
 
@@ -443,4 +449,45 @@ public class XMPPManager {
         }
 
     }
+
+    //GETTERS AND SETTERS
+
+
+    public static XMPPTCPConnection getTcpConnection() {
+        return tcpConnection;
+    }
+
+    public static boolean isConnected() {
+        return connected;
+    }
+
+    public static void setConnected(boolean connected) {
+        XMPPManager.connected = connected;
+    }
+
+    public static boolean isInstanceCreated() {
+        return instanceCreated;
+    }
+
+    public static void setInstanceCreated(boolean instanceCreated) {
+        XMPPManager.instanceCreated = instanceCreated;
+    }
+
+    public static boolean isConnecting() {
+        return connecting;
+    }
+
+    public static void setConnecting(boolean connecting) {
+        XMPPManager.connecting = connecting;
+    }
+
+    public static boolean isToasted() {
+        return toasted;
+    }
+
+    public static void setToasted(boolean toasted) {
+        XMPPManager.toasted = toasted;
+    }
+
+
 }//class XMPPManager

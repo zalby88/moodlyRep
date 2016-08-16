@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Moodly</string>
-    <string name="server">UnknownServer</string>
+    <string name="server">xmpp.jp</string>
     <string name="hello_world">Ciaoo</string>
 </resources>
