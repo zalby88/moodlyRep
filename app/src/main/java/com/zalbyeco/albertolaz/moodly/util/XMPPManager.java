@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zalbyeco.albertolaz.moodly.R;
-import com.zalbyeco.albertolaz.moodly.fragments.Moodles;
+import com.zalbyeco.albertolaz.moodly.fragments.MoodlesSection;
 import com.zalbyeco.albertolaz.moodly.moodles.MoodleMsg;
 import com.zalbyeco.albertolaz.moodly.service.MoodleService;
 
@@ -72,10 +72,10 @@ public class XMPPManager {
         }
     }
 
-    private XMPPManager(MoodleService context, String serverAdress, String logiUser,
+    private XMPPManager(MoodleService context, String serverAdress, String loginUser,
                   String passwordser) {
         this.serverAddress = serverAdress;
-        this.loginUser = logiUser;
+        this.loginUser = loginUser;
         this.passwordUser = passwordser;
         this.context = context;
         init();
@@ -254,6 +254,7 @@ public class XMPPManager {
         }
         final Message message = new Message();
         message.setBody(body);
+
         message.setStanzaId(chatMessage.msgid);
         message.setType(Message.Type.chat);
 
@@ -437,12 +438,12 @@ public class XMPPManager {
         private void processMessage(final MoodleMsg chatMessage) {
 
             chatMessage.isMine = false;
-            Moodles.msgslist.add(chatMessage);
+            MoodlesSection.msgslist.add(chatMessage);
             new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                 @Override
                 public void run() {
-                    Moodles.chatAdapter.notifyDataSetChanged();
+                    MoodlesSection.chatAdapter.notifyDataSetChanged();
 
                 }
             });

@@ -8,23 +8,36 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
+import com.zalbyeco.albertolaz.moodly.main.MainConstants;
 import com.zalbyeco.albertolaz.moodly.util.XMPPManager;
+import com.zalbyeco.albertolaz.moodly.users.User;
 
 /**
  * Created by Alberto Lazzarin on 04/08/2016.
  */
 public class MoodleService extends Service {
+
+    //STATIC FIELDS
     private static final String DOMAIN = "xmpp.jp";
-    private static final String USERNAME = "khushi";
-    private static final String PASSWORD = "password";
     public static ConnectivityManager connectivityManager;
     public static XMPPManager xmppManager;
     public static boolean serverChatCreated = false;
-    String text = "";
+
+    //NON-STATIC FIELDS
+    private String mUsername;
+    private String mPassword;
+    private String mText = "";
 
 
     @Override
     public IBinder onBind(final Intent intent) {
+
+        this.mUsername = intent.getStringExtra(MainConstants.INTENT_EXTRA_USERNAME_KEY);
+        this.mPassword = intent.getStringExtra(MainConstants.INTENT_EXTRA_PASSWORD_KEY);
+
+        xmppManager = XMPPManager.getInstance(MoodleService.this, DOMAIN, this.mUsername, this.mPassword);
+        xmppManager.connect("onCreate");
+
         return new LocalBinder<MoodleService>(this);
     }
 
@@ -34,8 +47,6 @@ public class MoodleService extends Service {
     public void onCreate() {
         super.onCreate();
         connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        xmppManager = XMPPManager.getInstance(MoodleService.this, DOMAIN, USERNAME, PASSWORD);
-        xmppManager.connect("onCreate");
     }
 
     @Override
@@ -57,5 +68,30 @@ public class MoodleService extends Service {
 
     public static boolean isNetworkConnected() {
         return connectivityManager.getActiveNetworkInfo() != null;
+    }
+
+
+    public String getCurrentUsername() {
+        return mUsername;
+    }
+
+    public void setCurrentUsername(String mUsername) {
+        this.mUsername = mUsername;
+    }
+
+    public String getCurrentUserPassword() {
+        return mPassword;
+    }
+
+    public void setCurrentUserPassword(String mPassword) {
+        this.mPassword = mPassword;
+    }
+
+    public String getMessageText() {
+        return mText;
+    }
+
+    public void setMessageText(String mText) {
+        this.mText = mText;
     }
 }

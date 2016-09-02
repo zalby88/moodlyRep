@@ -24,7 +24,7 @@ public class MoodleMsg {
         senderName = sender;
     }
 
-    public void setMsgID() {
+    public void generateMsgID() {
 
         msgid += "-" + String.format("%02d", new Random().nextInt(100));
         ;

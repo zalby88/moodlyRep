@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.zalbyeco.albertolaz.moodly.main.MainActivity;
+import com.zalbyeco.albertolaz.moodly.main.MainConstants;
 import com.zalbyeco.albertolaz.moodly.moodles.MoodleAdapter;
 import com.zalbyeco.albertolaz.moodly.moodles.MoodleMsg;
 
@@ -24,10 +25,9 @@ import com.zalbyeco.albertolaz.moodly.util.CommonUtils;
  * Created by Alberto Lazzarin  on 01/08/2016. Basically the chats object
  */
 
-public class Moodles extends Fragment implements OnClickListener {
+public class MoodlesSection extends Fragment implements OnClickListener {
 
     private EditText msgTextEdit;
-    private String user1 = "khushi", user2 = "khushi1";
     private Random random;
     public static ArrayList<MoodleMsg> msgslist;
     public static MoodleAdapter chatAdapter;
@@ -36,10 +36,11 @@ public class Moodles extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //Inflate
         View view = inflater.inflate(R.layout.cht_lyt, container, false);
+
         random = new Random();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
-                "Moodles");
         msgTextEdit = (EditText) view.findViewById(R.id.msgTextEdit);
         moodlesMsgList = (ListView) view.findViewById(R.id.moodlyMsgList);
         ImageButton sendButton = (ImageButton) view
@@ -57,23 +58,49 @@ public class Moodles extends Fragment implements OnClickListener {
     }
 
     @Override
+    public void onActivityCreated (Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //Find the container activity
+        MainActivity containerActivity = ((MainActivity) getActivity());
+
+        String titleBarText =
+                containerActivity.getCurrentUser() == null ? "ILLEGAL STATE": "You: " + containerActivity.getCurrentUser().getUsername();
+        containerActivity.getSupportActionBar().setTitle(titleBarText);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
     }
 
     public void sendTextMoodly(View v) {
         String message = msgTextEdit.getEditableText().toString();
         if (!message.equalsIgnoreCase("")) {
-            final MoodleMsg chatMessage = new MoodleMsg(user1, user1,
-                    message, "" + random.nextInt(1000), true);
-            chatMessage.setMsgID();
-            chatMessage.body = message;
+
+            //get the container Activity
+            MainActivity containerActivity = ((MainActivity) getActivity());
+
+            //sender and receiver
+            String sender = containerActivity.getCurrentUser().getUsername();
+
+            //TODO handle the receiver
+            String receiver = sender;
+
+            final MoodleMsg chatMessage = new MoodleMsg(sender,
+                                                        receiver,
+                                                        message,
+                                                        "" + random.nextInt(1000),
+                                                        true);
+            chatMessage.generateMsgID();
             chatMessage.Date = CommonUtils.getCurrentDate();
             chatMessage.Time = CommonUtils.getCurrentTime();
-            msgTextEdit.setText("");
+
+            msgTextEdit.setText(""); //resets the message editor
             chatAdapter.add(chatMessage);
             chatAdapter.notifyDataSetChanged();
-            MainActivity activity = ((MainActivity) getActivity());
-            activity.getMoodleService().xmppManager.sendMessage(chatMessage);
+
+            containerActivity.getMoodleService().xmppManager.sendMessage(chatMessage);
+
         }
     }
 

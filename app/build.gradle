@@ -33,6 +33,9 @@ repositories {
 }
 
 dependencies {
+    compile 'com.android.support:design:23.+'
+}
+dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.code.gson:gson:2.2.4'
 

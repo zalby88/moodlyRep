@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Moodly.iml" filepath="$PROJECT_DIR$/Moodly.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/moodlyRep.iml" filepath="$PROJECT_DIR$/moodlyRep.iml" />
     </modules>
   </component>
 </project>
