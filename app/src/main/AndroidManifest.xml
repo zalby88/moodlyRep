@@ -18,21 +18,32 @@
         android:theme="@style/AppTheme">
 
         <!-- ACTIVITIES -->
-        <activity android:name=".main.MainActivity">
-        </activity>
         <activity
             android:name=".main.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".main.ContactsListActivity"
+            android:label="@string/title_activity_contacts_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".main.MainActivity">
+        </activity>
+        <!-- ACTIVITIES | END -->
 
         <!-- SERVICES -->
         <service
             android:name=".service.MoodleService"
             android:enabled="true" />
+        <!-- SERVICES | END -->
+
+
     </application>
 
 </manifest>

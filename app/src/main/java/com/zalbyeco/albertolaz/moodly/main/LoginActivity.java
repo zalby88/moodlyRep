@@ -346,7 +346,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.i("LOGIN TASK","SUCCESS, going to Main Activity!!!!!!!");
 
                 //goes to the first main view of the application
-                goToMainActivity();
+                goToContactsListActivity();
 
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -354,9 +354,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
-        private void goToMainActivity() {
+        private void goToContactsListActivity() {
             Intent firstActivityIntnt = new Intent();
-            firstActivityIntnt.setClass(getApplicationContext(),MainActivity.class);
+            firstActivityIntnt.setClass(getApplicationContext(),ContactsListActivity.class);
 
             String actualUsername = mEmail;
             if (usingFreeXmppJs) {
