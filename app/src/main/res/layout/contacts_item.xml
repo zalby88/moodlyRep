@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!-- Attention: using "android:duplicateParentState" to propagate "touch" event from LinearLayout to its children -->
+    <!-- CONTACT ITEM EXAMPLE -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1.0"
+        android:clickable="true"
+        android:padding="10dip"
+        android:id="@+id/linearLayout">
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.9"
+            android:text="test@test.it"
+            android:textSize="24dip"
+            android:textIsSelectable="true"
+            android:duplicateParentState="true"/>
+
+        <ImageView
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_weight="0.1"
+            android:layout_gravity="right"
+            android:src="@android:drawable/presence_invisible"
+            android:duplicateParentState="true"
+            android:layout_marginTop="2dip" />
+    </LinearLayout>
+
